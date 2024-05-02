@@ -18,13 +18,19 @@ message Sensor {
     SensorType type = 2;
 }
 
+message Sensors {
+    ReplyType replyType = 1;
+    string msg = 2;
+    repeated Sensor list = 3;
+}
+
 message UnitInfo {
-    Sensor sensor = 1;
+    uint32 sensorId = 1;
     string unit = 2;
 }
 
 message Measurement {
-    ReplyType type = 1;
+    ReplyType replyType = 1;
     string msg = 2;
     double value = 3;
     string unit = 4;
@@ -35,8 +41,14 @@ message Speaker {
     uint32 id = 1;
 }
 
+message Speakers {
+    ReplyType replyType = 1;
+    string msg = 2;
+    repeated Speaker list = 3;
+}
+
 message SpeakerSetting {
-    uint32 id = 1;
+    uint32 speakerId = 1;
     Type type = 2;
 
     oneof value {
@@ -60,13 +72,17 @@ enum ReplyType {
     ERR = 1;
 }
 
+message Empty {}
+
 // services
 service SensorService {
     rpc GetMeasurement (Sensor) returns (Measurement) {}
     rpc SetUnit (UnitInfo) returns (Reply) {}
+    rpc GetSensors (Empty) returns (Sensors) {}
 }
 
 service SpeakerService {
     rpc GetCurrentlyPlaying (Speaker) returns (Reply) {}
     rpc ApplySetting (SpeakerSetting) returns (Reply) {}
+    rpc GetSpeakers (Empty) returns (Speakers) {}
 }

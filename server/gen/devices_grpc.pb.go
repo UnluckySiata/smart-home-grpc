@@ -4,7 +4,7 @@
 // - protoc             v5.27.0--dev
 // source: devices.proto
 
-package proto
+package _go
 
 import (
 	context "context"
@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	SensorService_GetMeasurement_FullMethodName = "/devices.SensorService/GetMeasurement"
 	SensorService_SetUnit_FullMethodName        = "/devices.SensorService/SetUnit"
+	SensorService_GetSensors_FullMethodName     = "/devices.SensorService/GetSensors"
 )
 
 // SensorServiceClient is the client API for SensorService service.
@@ -29,6 +30,7 @@ const (
 type SensorServiceClient interface {
 	GetMeasurement(ctx context.Context, in *Sensor, opts ...grpc.CallOption) (*Measurement, error)
 	SetUnit(ctx context.Context, in *UnitInfo, opts ...grpc.CallOption) (*Reply, error)
+	GetSensors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Sensors, error)
 }
 
 type sensorServiceClient struct {
@@ -57,12 +59,22 @@ func (c *sensorServiceClient) SetUnit(ctx context.Context, in *UnitInfo, opts ..
 	return out, nil
 }
 
+func (c *sensorServiceClient) GetSensors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Sensors, error) {
+	out := new(Sensors)
+	err := c.cc.Invoke(ctx, SensorService_GetSensors_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SensorServiceServer is the server API for SensorService service.
 // All implementations must embed UnimplementedSensorServiceServer
 // for forward compatibility
 type SensorServiceServer interface {
 	GetMeasurement(context.Context, *Sensor) (*Measurement, error)
 	SetUnit(context.Context, *UnitInfo) (*Reply, error)
+	GetSensors(context.Context, *Empty) (*Sensors, error)
 	mustEmbedUnimplementedSensorServiceServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedSensorServiceServer) GetMeasurement(context.Context, *Sensor)
 }
 func (UnimplementedSensorServiceServer) SetUnit(context.Context, *UnitInfo) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetUnit not implemented")
+}
+func (UnimplementedSensorServiceServer) GetSensors(context.Context, *Empty) (*Sensors, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSensors not implemented")
 }
 func (UnimplementedSensorServiceServer) mustEmbedUnimplementedSensorServiceServer() {}
 
@@ -125,6 +140,24 @@ func _SensorService_SetUnit_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SensorService_GetSensors_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SensorServiceServer).GetSensors(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SensorService_GetSensors_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SensorServiceServer).GetSensors(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SensorService_ServiceDesc is the grpc.ServiceDesc for SensorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -140,6 +173,10 @@ var SensorService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SetUnit",
 			Handler:    _SensorService_SetUnit_Handler,
 		},
+		{
+			MethodName: "GetSensors",
+			Handler:    _SensorService_GetSensors_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "devices.proto",
@@ -148,6 +185,7 @@ var SensorService_ServiceDesc = grpc.ServiceDesc{
 const (
 	SpeakerService_GetCurrentlyPlaying_FullMethodName = "/devices.SpeakerService/GetCurrentlyPlaying"
 	SpeakerService_ApplySetting_FullMethodName        = "/devices.SpeakerService/ApplySetting"
+	SpeakerService_GetSpeakers_FullMethodName         = "/devices.SpeakerService/GetSpeakers"
 )
 
 // SpeakerServiceClient is the client API for SpeakerService service.
@@ -156,6 +194,7 @@ const (
 type SpeakerServiceClient interface {
 	GetCurrentlyPlaying(ctx context.Context, in *Speaker, opts ...grpc.CallOption) (*Reply, error)
 	ApplySetting(ctx context.Context, in *SpeakerSetting, opts ...grpc.CallOption) (*Reply, error)
+	GetSpeakers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Speakers, error)
 }
 
 type speakerServiceClient struct {
@@ -184,12 +223,22 @@ func (c *speakerServiceClient) ApplySetting(ctx context.Context, in *SpeakerSett
 	return out, nil
 }
 
+func (c *speakerServiceClient) GetSpeakers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Speakers, error) {
+	out := new(Speakers)
+	err := c.cc.Invoke(ctx, SpeakerService_GetSpeakers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SpeakerServiceServer is the server API for SpeakerService service.
 // All implementations must embed UnimplementedSpeakerServiceServer
 // for forward compatibility
 type SpeakerServiceServer interface {
 	GetCurrentlyPlaying(context.Context, *Speaker) (*Reply, error)
 	ApplySetting(context.Context, *SpeakerSetting) (*Reply, error)
+	GetSpeakers(context.Context, *Empty) (*Speakers, error)
 	mustEmbedUnimplementedSpeakerServiceServer()
 }
 
@@ -202,6 +251,9 @@ func (UnimplementedSpeakerServiceServer) GetCurrentlyPlaying(context.Context, *S
 }
 func (UnimplementedSpeakerServiceServer) ApplySetting(context.Context, *SpeakerSetting) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApplySetting not implemented")
+}
+func (UnimplementedSpeakerServiceServer) GetSpeakers(context.Context, *Empty) (*Speakers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpeakers not implemented")
 }
 func (UnimplementedSpeakerServiceServer) mustEmbedUnimplementedSpeakerServiceServer() {}
 
@@ -252,6 +304,24 @@ func _SpeakerService_ApplySetting_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SpeakerService_GetSpeakers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SpeakerServiceServer).GetSpeakers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SpeakerService_GetSpeakers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SpeakerServiceServer).GetSpeakers(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SpeakerService_ServiceDesc is the grpc.ServiceDesc for SpeakerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +336,10 @@ var SpeakerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ApplySetting",
 			Handler:    _SpeakerService_ApplySetting_Handler,
+		},
+		{
+			MethodName: "GetSpeakers",
+			Handler:    _SpeakerService_GetSpeakers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
