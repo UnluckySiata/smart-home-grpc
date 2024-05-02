@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option go_package = "github.com/unluckysiata/smart-home-grpc/gen/go";
+// option java_multiple_files = true;
+// option java_package = "io.grpc.examples.helloworld";
+// option java_outer_classname = "HelloWorldProto";
+
+package devices;
+
+// sensors
+enum SensorType {
+    TEMPERATURE = 0;
+    AIR_QUALITY = 1;
+}
+
+message Sensor {
+    uint32 id = 1;
+    SensorType type = 2;
+}
+
+message UnitInfo {
+    Sensor sensor = 1;
+    string unit = 2;
+}
+
+message Measurement {
+    ReplyType type = 1;
+    string msg = 2;
+    double value = 3;
+    string unit = 4;
+}
+
+// speaker
+message Speaker {
+    uint32 id = 1;
+}
+
+message SpeakerSetting {
+    uint32 id = 1;
+    Type type = 2;
+
+    oneof value {
+        string text = 3;
+        double numeric = 4;
+    }
+    enum Type {
+        VOLUME = 0;
+        SONG = 1;
+    }
+}
+
+// universal
+message Reply {
+    ReplyType type = 1;
+    string msg = 2;
+}
+
+enum ReplyType {
+    OK = 0;
+    ERR = 1;
+}
+
+// services
+service SensorService {
+    rpc GetMeasurement (Sensor) returns (Measurement) {}
+    rpc SetUnit (UnitInfo) returns (Reply) {}
+}
+
+service SpeakerService {
+    rpc GetCurrentlyPlaying (Speaker) returns (Reply) {}
+    rpc ApplySetting (SpeakerSetting) returns (Reply) {}
+}
