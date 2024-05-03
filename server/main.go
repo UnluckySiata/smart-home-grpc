@@ -44,7 +44,7 @@ func (s *speakerServer) ApplySetting(ctx context.Context, in *pb.SpeakerSetting)
 }
 
 func (s *speakerServer) GetSpeakers(ctx context.Context, in *pb.Empty) (*pb.Speakers, error) {
-	return &pb.Speakers{}, nil
+	return &pb.Speakers{ReplyType: pb.ReplyType_ERR, Msg: "No speakers registered"}, nil
 }
 
 func main() {
