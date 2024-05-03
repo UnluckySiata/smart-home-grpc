@@ -9,24 +9,28 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class SensorType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     TEMPERATURE: _ClassVar[SensorType]
-    AIR_QUALITY: _ClassVar[SensorType]
+    PRESSURE: _ClassVar[SensorType]
 
 class ReplyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     OK: _ClassVar[ReplyType]
     ERR: _ClassVar[ReplyType]
 TEMPERATURE: SensorType
-AIR_QUALITY: SensorType
+PRESSURE: SensorType
 OK: ReplyType
 ERR: ReplyType
 
 class Sensor(_message.Message):
-    __slots__ = ("id", "type")
+    __slots__ = ("id", "type", "value", "unit")
     ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    UNIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     type: SensorType
-    def __init__(self, id: _Optional[int] = ..., type: _Optional[_Union[SensorType, str]] = ...) -> None: ...
+    value: float
+    unit: str
+    def __init__(self, id: _Optional[int] = ..., type: _Optional[_Union[SensorType, str]] = ..., value: _Optional[float] = ..., unit: _Optional[str] = ...) -> None: ...
 
 class Sensors(_message.Message):
     __slots__ = ("replyType", "msg", "list")
@@ -59,10 +63,14 @@ class Measurement(_message.Message):
     def __init__(self, replyType: _Optional[_Union[ReplyType, str]] = ..., msg: _Optional[str] = ..., value: _Optional[float] = ..., unit: _Optional[str] = ...) -> None: ...
 
 class Speaker(_message.Message):
-    __slots__ = ("id",)
+    __slots__ = ("id", "song", "volume")
     ID_FIELD_NUMBER: _ClassVar[int]
+    SONG_FIELD_NUMBER: _ClassVar[int]
+    VOLUME_FIELD_NUMBER: _ClassVar[int]
     id: int
-    def __init__(self, id: _Optional[int] = ...) -> None: ...
+    song: str
+    volume: int
+    def __init__(self, id: _Optional[int] = ..., song: _Optional[str] = ..., volume: _Optional[int] = ...) -> None: ...
 
 class Speakers(_message.Message):
     __slots__ = ("replyType", "msg", "list")
