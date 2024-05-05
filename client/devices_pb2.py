@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rdevices.proto\x12\x07\x64\x65vices\"T\n\x06Sensor\x12\n\n\x02id\x18\x01 \x01(\r\x12!\n\x04type\x18\x02 \x01(\x0e\x32\x13.devices.SensorType\x12\r\n\x05value\x18\x03 \x01(\x01\x12\x0c\n\x04unit\x18\x04 \x01(\t\"\\\n\x07Sensors\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\x1d\n\x04list\x18\x03 \x03(\x0b\x32\x0f.devices.Sensor\"*\n\x08UnitInfo\x12\x10\n\x08sensorId\x18\x01 \x01(\r\x12\x0c\n\x04unit\x18\x02 \x01(\t\"^\n\x0bMeasurement\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\x01\x12\x0c\n\x04unit\x18\x04 \x01(\t\"3\n\x07Speaker\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04song\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\r\"^\n\x08Speakers\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\x1e\n\x04list\x18\x03 \x03(\x0b\x32\x10.devices.Speaker\"\x99\x01\n\x0eSpeakerSetting\x12\x11\n\tspeakerId\x18\x01 \x01(\r\x12*\n\x04type\x18\x02 \x01(\x0e\x32\x1c.devices.SpeakerSetting.Type\x12\x0e\n\x04text\x18\x03 \x01(\tH\x00\x12\x11\n\x07numeric\x18\x04 \x01(\rH\x00\"\x1c\n\x04Type\x12\n\n\x06VOLUME\x10\x00\x12\x08\n\x04SONG\x10\x01\x42\x07\n\x05value\"6\n\x05Reply\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\"\x07\n\x05\x45mpty*+\n\nSensorType\x12\x0f\n\x0bTEMPERATURE\x10\x00\x12\x0c\n\x08PRESSURE\x10\x01*\x1c\n\tReplyType\x12\x06\n\x02OK\x10\x00\x12\x07\n\x03\x45RR\x10\x01\x32\xac\x01\n\rSensorService\x12\x39\n\x0eGetMeasurement\x12\x0f.devices.Sensor\x1a\x14.devices.Measurement\"\x00\x12.\n\x07SetUnit\x12\x11.devices.UnitInfo\x1a\x0e.devices.Reply\"\x00\x12\x30\n\nGetSensors\x12\x0e.devices.Empty\x1a\x10.devices.Sensors\"\x00\x32\xba\x01\n\x0eSpeakerService\x12\x39\n\x13GetCurrentlyPlaying\x12\x10.devices.Speaker\x1a\x0e.devices.Reply\"\x00\x12\x39\n\x0c\x41pplySetting\x12\x17.devices.SpeakerSetting\x1a\x0e.devices.Reply\"\x00\x12\x32\n\x0bGetSpeakers\x12\x0e.devices.Empty\x1a\x11.devices.Speakers\"\x00\x42\x30Z.github.com/unluckysiata/smart-home-grpc/gen/gob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rdevices.proto\x12\x07\x64\x65vices\"\xb2\x01\n\x06Sensor\x12\n\n\x02id\x18\x01 \x01(\r\x12!\n\x04type\x18\x02 \x01(\x0e\x32\x13.devices.SensorType\x12\r\n\x05value\x18\x03 \x01(\x01\x12\x33\n\x0ftemperatureUnit\x18\x04 \x01(\x0e\x32\x18.devices.TemperatureUnitH\x00\x12-\n\x0cpressureUnit\x18\x05 \x01(\x0e\x32\x15.devices.PressureUnitH\x00\x42\x06\n\x04unit\"\\\n\x07Sensors\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\x1d\n\x04list\x18\x03 \x03(\x0b\x32\x0f.devices.Sensor\"\xab\x01\n\x08UnitInfo\x12\x10\n\x08sensorId\x18\x01 \x01(\r\x12!\n\x04type\x18\x02 \x01(\x0e\x32\x13.devices.SensorType\x12\x33\n\x0ftemperatureUnit\x18\x03 \x01(\x0e\x32\x18.devices.TemperatureUnitH\x00\x12-\n\x0cpressureUnit\x18\x04 \x01(\x0e\x32\x15.devices.PressureUnitH\x00\x42\x06\n\x04unit\"\xdf\x01\n\x0bMeasurement\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\x01\x12!\n\x04type\x18\x04 \x01(\x0e\x32\x13.devices.SensorType\x12\x33\n\x0ftemperatureUnit\x18\x05 \x01(\x0e\x32\x18.devices.TemperatureUnitH\x00\x12-\n\x0cpressureUnit\x18\x06 \x01(\x0e\x32\x15.devices.PressureUnitH\x00\x42\x06\n\x04unit\"3\n\x07Speaker\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04song\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\r\"^\n\x08Speakers\x12%\n\treplyType\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\x1e\n\x04list\x18\x03 \x03(\x0b\x32\x10.devices.Speaker\"\x99\x01\n\x0eSpeakerSetting\x12\x11\n\tspeakerId\x18\x01 \x01(\r\x12*\n\x04type\x18\x02 \x01(\x0e\x32\x1c.devices.SpeakerSetting.Type\x12\x0e\n\x04text\x18\x03 \x01(\tH\x00\x12\x11\n\x07numeric\x18\x04 \x01(\rH\x00\"\x1c\n\x04Type\x12\n\n\x06VOLUME\x10\x00\x12\x08\n\x04SONG\x10\x01\x42\x07\n\x05value\"J\n\x0eScheduledAlarm\x12\x0c\n\x04hour\x18\x01 \x01(\r\x12\x0e\n\x06minute\x18\x02 \x01(\r\x12\x1a\n\x04\x64\x61ys\x18\x03 \x03(\x0e\x32\x0c.devices.Day\"A\n\nAlarmClock\x12\n\n\x02id\x18\x01 \x01(\r\x12\'\n\x06\x61larms\x18\x02 \x03(\x0b\x32\x17.devices.ScheduledAlarm\"6\n\x05Reply\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.devices.ReplyType\x12\x0b\n\x03msg\x18\x02 \x01(\t\"\x07\n\x05\x45mpty*+\n\nSensorType\x12\x0f\n\x0bTEMPERATURE\x10\x00\x12\x0c\n\x08PRESSURE\x10\x01*.\n\x0fTemperatureUnit\x12\x0b\n\x07\x43\x45LCIUS\x10\x00\x12\x0e\n\nFAHRENHEIT\x10\x01* \n\x0cPressureUnit\x12\x07\n\x03HPA\x10\x00\x12\x07\n\x03\x42\x41R\x10\x01*a\n\x03\x44\x61y\x12\n\n\x06MONDAY\x10\x00\x12\x0b\n\x07TUESDAY\x10\x01\x12\r\n\tWEDNESDAY\x10\x02\x12\x0c\n\x08THURSDAY\x10\x03\x12\n\n\x06\x46RIDAY\x10\x04\x12\x0c\n\x08SATURDAY\x10\x05\x12\n\n\x06SUNDAY\x10\x06*\x1c\n\tReplyType\x12\x06\n\x02OK\x10\x00\x12\x07\n\x03\x45RR\x10\x01\x32\xac\x01\n\rSensorService\x12\x39\n\x0eGetMeasurement\x12\x0f.devices.Sensor\x1a\x14.devices.Measurement\"\x00\x12.\n\x07SetUnit\x12\x11.devices.UnitInfo\x1a\x0e.devices.Reply\"\x00\x12\x30\n\nGetSensors\x12\x0e.devices.Empty\x1a\x10.devices.Sensors\"\x00\x32\xba\x01\n\x0eSpeakerService\x12\x39\n\x13GetCurrentlyPlaying\x12\x10.devices.Speaker\x1a\x0e.devices.Reply\"\x00\x12\x39\n\x0c\x41pplySetting\x12\x17.devices.SpeakerSetting\x1a\x0e.devices.Reply\"\x00\x12\x32\n\x0bGetSpeakers\x12\x0e.devices.Empty\x1a\x11.devices.Speakers\"\x00\x42\x30Z.github.com/unluckysiata/smart-home-grpc/gen/gob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,32 +22,42 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'devices_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z.github.com/unluckysiata/smart-home-grpc/gen/go'
-  _globals['_SENSORTYPE']._serialized_start=716
-  _globals['_SENSORTYPE']._serialized_end=759
-  _globals['_REPLYTYPE']._serialized_start=761
-  _globals['_REPLYTYPE']._serialized_end=789
-  _globals['_SENSOR']._serialized_start=26
-  _globals['_SENSOR']._serialized_end=110
-  _globals['_SENSORS']._serialized_start=112
-  _globals['_SENSORS']._serialized_end=204
-  _globals['_UNITINFO']._serialized_start=206
-  _globals['_UNITINFO']._serialized_end=248
-  _globals['_MEASUREMENT']._serialized_start=250
-  _globals['_MEASUREMENT']._serialized_end=344
-  _globals['_SPEAKER']._serialized_start=346
-  _globals['_SPEAKER']._serialized_end=397
-  _globals['_SPEAKERS']._serialized_start=399
-  _globals['_SPEAKERS']._serialized_end=493
-  _globals['_SPEAKERSETTING']._serialized_start=496
-  _globals['_SPEAKERSETTING']._serialized_end=649
-  _globals['_SPEAKERSETTING_TYPE']._serialized_start=612
-  _globals['_SPEAKERSETTING_TYPE']._serialized_end=640
-  _globals['_REPLY']._serialized_start=651
-  _globals['_REPLY']._serialized_end=705
-  _globals['_EMPTY']._serialized_start=707
-  _globals['_EMPTY']._serialized_end=714
-  _globals['_SENSORSERVICE']._serialized_start=792
-  _globals['_SENSORSERVICE']._serialized_end=964
-  _globals['_SPEAKERSERVICE']._serialized_start=967
-  _globals['_SPEAKERSERVICE']._serialized_end=1153
+  _globals['_SENSORTYPE']._serialized_start=1214
+  _globals['_SENSORTYPE']._serialized_end=1257
+  _globals['_TEMPERATUREUNIT']._serialized_start=1259
+  _globals['_TEMPERATUREUNIT']._serialized_end=1305
+  _globals['_PRESSUREUNIT']._serialized_start=1307
+  _globals['_PRESSUREUNIT']._serialized_end=1339
+  _globals['_DAY']._serialized_start=1341
+  _globals['_DAY']._serialized_end=1438
+  _globals['_REPLYTYPE']._serialized_start=1440
+  _globals['_REPLYTYPE']._serialized_end=1468
+  _globals['_SENSOR']._serialized_start=27
+  _globals['_SENSOR']._serialized_end=205
+  _globals['_SENSORS']._serialized_start=207
+  _globals['_SENSORS']._serialized_end=299
+  _globals['_UNITINFO']._serialized_start=302
+  _globals['_UNITINFO']._serialized_end=473
+  _globals['_MEASUREMENT']._serialized_start=476
+  _globals['_MEASUREMENT']._serialized_end=699
+  _globals['_SPEAKER']._serialized_start=701
+  _globals['_SPEAKER']._serialized_end=752
+  _globals['_SPEAKERS']._serialized_start=754
+  _globals['_SPEAKERS']._serialized_end=848
+  _globals['_SPEAKERSETTING']._serialized_start=851
+  _globals['_SPEAKERSETTING']._serialized_end=1004
+  _globals['_SPEAKERSETTING_TYPE']._serialized_start=967
+  _globals['_SPEAKERSETTING_TYPE']._serialized_end=995
+  _globals['_SCHEDULEDALARM']._serialized_start=1006
+  _globals['_SCHEDULEDALARM']._serialized_end=1080
+  _globals['_ALARMCLOCK']._serialized_start=1082
+  _globals['_ALARMCLOCK']._serialized_end=1147
+  _globals['_REPLY']._serialized_start=1149
+  _globals['_REPLY']._serialized_end=1203
+  _globals['_EMPTY']._serialized_start=1205
+  _globals['_EMPTY']._serialized_end=1212
+  _globals['_SENSORSERVICE']._serialized_start=1471
+  _globals['_SENSORSERVICE']._serialized_end=1643
+  _globals['_SPEAKERSERVICE']._serialized_start=1646
+  _globals['_SPEAKERSERVICE']._serialized_end=1832
 # @@protoc_insertion_point(module_scope)

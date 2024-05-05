@@ -15,7 +15,20 @@ type sensorServer struct {
 func (s *sensorServer) GetMeasurement(ctx context.Context, in *pb.Sensor) (*pb.Measurement, error) {
 	if uint32(len(s.sensors)) > in.Id {
 		sensor := s.sensors[in.Id]
-		return &pb.Measurement{ReplyType: pb.ReplyType_OK, Value: sensor.Value, Unit: sensor.Unit}, nil
+		switch sensor.Type {
+		case pb.SensorType_TEMPERATURE:
+			return &pb.Measurement{
+				ReplyType: pb.ReplyType_OK,
+				Type:      pb.SensorType_TEMPERATURE,
+				Value:     sensor.Value,
+				Unit:      &pb.Measurement_TemperatureUnit{TemperatureUnit: sensor.GetTemperatureUnit()}}, nil
+		case pb.SensorType_PRESSURE:
+			return &pb.Measurement{
+				ReplyType: pb.ReplyType_OK,
+				Type:      pb.SensorType_PRESSURE,
+				Value:     sensor.Value,
+				Unit:      &pb.Measurement_PressureUnit{PressureUnit: sensor.GetPressureUnit()}}, nil
+		}
 	}
 	return &pb.Measurement{ReplyType: pb.ReplyType_ERR, Msg: "Sensor with given id not found!"}, nil
 }
@@ -23,7 +36,21 @@ func (s *sensorServer) GetMeasurement(ctx context.Context, in *pb.Sensor) (*pb.M
 func (s *sensorServer) SetUnit(ctx context.Context, in *pb.UnitInfo) (*pb.Reply, error) {
 	if uint32(len(s.sensors)) > in.SensorId {
 		sensor := s.sensors[in.SensorId]
-		sensor.Unit = in.Unit
+
+		switch sensor.Type {
+		case pb.SensorType_TEMPERATURE:
+			if in.GetType() != pb.SensorType_TEMPERATURE {
+				return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Invalid unit type for temperature sensor"}, nil
+			}
+			sensor.Unit = &pb.Sensor_TemperatureUnit{TemperatureUnit: in.GetTemperatureUnit()}
+		case pb.SensorType_PRESSURE:
+			if in.GetType() != pb.SensorType_PRESSURE {
+				return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Invalid unit type for pressure sensor"}, nil
+			}
+			sensor.Unit = &pb.Sensor_PressureUnit{PressureUnit: in.GetPressureUnit()}
+		default:
+			return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Invalid unit type"}, nil
+		}
 		return &pb.Reply{Type: pb.ReplyType_OK}, nil
 	}
 	return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Sensor with given id not found!"}, nil

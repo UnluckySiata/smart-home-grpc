@@ -40,8 +40,31 @@ def handle_list(r1, r2):
 
 
 def print_measurement(r):
+    unit: str
     if r.replyType == devices_pb2.ReplyType.OK:
-        print(f"{r.value} {r.unit}")
+        match r.type:
+            case devices_pb2.TEMPERATURE:
+                match r.temperatureUnit:
+                    case devices_pb2.CELCIUS:
+                        unit = "C"
+                    case devices_pb2.FAHRENHEIT:
+                        unit = "F"
+                    case _:
+                        unit = "unknown"
+
+            case devices_pb2.PRESSURE:
+                match r.pressureUnit:
+                    case devices_pb2.BAR:
+                        unit = "Ba"
+                    case devices_pb2.HPA:
+                        unit = "hPa"
+                    case _:
+                        unit = "unknown"
+            case _:
+                unit = "unknown"
+
+
+        print(f"{r.value} {unit}")
     else:
         print(r.msg)
 
@@ -121,13 +144,29 @@ if __name__ == "__main__":
                             case "g":
                                 r = sensor_stub.GetMeasurement(devices_pb2.Sensor(id=selected_device))
 
-                                if r.replyType == devices_pb2.ReplyType.OK:
-                                    print(f"measurement: {r.value} {r.unit}")
-                                else:
-                                    print(r.msg)
+                                print_measurement(r)
 
                             case "s":
-                                r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, unit=values[0]))
+                                match values[0]:
+                                    case "c":
+                                        unit = devices_pb2.CELCIUS
+                                        t = devices_pb2.TEMPERATURE
+                                        r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, type=t, temperatureUnit=unit))
+                                    case "f":
+                                        unit = devices_pb2.FAHRENHEIT
+                                        t = devices_pb2.TEMPERATURE
+                                        r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, type=t, temperatureUnit=unit))
+                                    case "ba":
+                                        unit = devices_pb2.BAR
+                                        t = devices_pb2.PRESSURE
+                                        r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, type=t, pressureUnit=unit))
+                                    case "hpa":
+                                        unit = devices_pb2.HPA
+                                        t = devices_pb2.PRESSURE
+                                        r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, type=t, pressureUnit=unit))
+                                    case _:
+                                        print(f"Unknown unit type: {values[0]}")
+                                        continue
 
                                 if r.type == devices_pb2.ReplyType.ERR:
                                     print(r.msg)

@@ -24,8 +24,8 @@ func main() {
 
 	sensors := &sensorServer{
 		sensors: []*pb.Sensor{
-			{Id: 0, Type: pb.SensorType_TEMPERATURE, Value: 0.5, Unit: "Celcius"},
-			{Id: 1, Type: pb.SensorType_PRESSURE, Value: 0.4, Unit: "hPa"},
+			{Id: 0, Type: pb.SensorType_TEMPERATURE, Value: 0.5, Unit: &pb.Sensor_TemperatureUnit{TemperatureUnit: pb.TemperatureUnit_CELCIUS}},
+			{Id: 1, Type: pb.SensorType_PRESSURE, Value: 0.4, Unit: &pb.Sensor_PressureUnit{PressureUnit: pb.PressureUnit_HPA}},
 		},
 	}
 

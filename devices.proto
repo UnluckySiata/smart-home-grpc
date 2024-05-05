@@ -10,11 +10,24 @@ enum SensorType {
     PRESSURE = 1;
 }
 
+enum TemperatureUnit {
+    CELCIUS = 0;
+    FAHRENHEIT = 1;
+}
+
+enum PressureUnit {
+    HPA = 0;
+    BAR = 1;
+}
+
 message Sensor {
     uint32 id = 1;
     SensorType type = 2;
     double value = 3;
-    string unit = 4;
+    oneof unit {
+        TemperatureUnit temperatureUnit = 4;
+        PressureUnit pressureUnit = 5;
+    }
 }
 
 message Sensors {
@@ -25,14 +38,22 @@ message Sensors {
 
 message UnitInfo {
     uint32 sensorId = 1;
-    string unit = 2;
+    SensorType type = 2;
+    oneof unit {
+        TemperatureUnit temperatureUnit = 3;
+        PressureUnit pressureUnit = 4;
+    }
 }
 
 message Measurement {
     ReplyType replyType = 1;
     string msg = 2;
     double value = 3;
-    string unit = 4;
+    SensorType type = 4;
+    oneof unit {
+        TemperatureUnit temperatureUnit = 5;
+        PressureUnit pressureUnit = 6;
+    }
 }
 
 // speaker
@@ -60,6 +81,28 @@ message SpeakerSetting {
         VOLUME = 0;
         SONG = 1;
     }
+}
+
+// alarm clock
+enum Day {
+    MONDAY = 0;
+    TUESDAY = 1;
+    WEDNESDAY = 2;
+    THURSDAY = 3;
+    FRIDAY = 4;
+    SATURDAY = 5;
+    SUNDAY = 6;
+}
+
+message ScheduledAlarm {
+    uint32 hour = 1;
+    uint32 minute = 2;
+    repeated Day days = 3;
+}
+
+message AlarmClock {
+    uint32 id = 1;
+    repeated ScheduledAlarm alarms = 2;
 }
 
 // universal

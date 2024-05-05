@@ -11,26 +11,59 @@ class SensorType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TEMPERATURE: _ClassVar[SensorType]
     PRESSURE: _ClassVar[SensorType]
 
+class TemperatureUnit(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    CELCIUS: _ClassVar[TemperatureUnit]
+    FAHRENHEIT: _ClassVar[TemperatureUnit]
+
+class PressureUnit(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    HPA: _ClassVar[PressureUnit]
+    BAR: _ClassVar[PressureUnit]
+
+class Day(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    MONDAY: _ClassVar[Day]
+    TUESDAY: _ClassVar[Day]
+    WEDNESDAY: _ClassVar[Day]
+    THURSDAY: _ClassVar[Day]
+    FRIDAY: _ClassVar[Day]
+    SATURDAY: _ClassVar[Day]
+    SUNDAY: _ClassVar[Day]
+
 class ReplyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     OK: _ClassVar[ReplyType]
     ERR: _ClassVar[ReplyType]
 TEMPERATURE: SensorType
 PRESSURE: SensorType
+CELCIUS: TemperatureUnit
+FAHRENHEIT: TemperatureUnit
+HPA: PressureUnit
+BAR: PressureUnit
+MONDAY: Day
+TUESDAY: Day
+WEDNESDAY: Day
+THURSDAY: Day
+FRIDAY: Day
+SATURDAY: Day
+SUNDAY: Day
 OK: ReplyType
 ERR: ReplyType
 
 class Sensor(_message.Message):
-    __slots__ = ("id", "type", "value", "unit")
+    __slots__ = ("id", "type", "value", "temperatureUnit", "pressureUnit")
     ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
-    UNIT_FIELD_NUMBER: _ClassVar[int]
+    TEMPERATUREUNIT_FIELD_NUMBER: _ClassVar[int]
+    PRESSUREUNIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     type: SensorType
     value: float
-    unit: str
-    def __init__(self, id: _Optional[int] = ..., type: _Optional[_Union[SensorType, str]] = ..., value: _Optional[float] = ..., unit: _Optional[str] = ...) -> None: ...
+    temperatureUnit: TemperatureUnit
+    pressureUnit: PressureUnit
+    def __init__(self, id: _Optional[int] = ..., type: _Optional[_Union[SensorType, str]] = ..., value: _Optional[float] = ..., temperatureUnit: _Optional[_Union[TemperatureUnit, str]] = ..., pressureUnit: _Optional[_Union[PressureUnit, str]] = ...) -> None: ...
 
 class Sensors(_message.Message):
     __slots__ = ("replyType", "msg", "list")
@@ -43,24 +76,32 @@ class Sensors(_message.Message):
     def __init__(self, replyType: _Optional[_Union[ReplyType, str]] = ..., msg: _Optional[str] = ..., list: _Optional[_Iterable[_Union[Sensor, _Mapping]]] = ...) -> None: ...
 
 class UnitInfo(_message.Message):
-    __slots__ = ("sensorId", "unit")
+    __slots__ = ("sensorId", "type", "temperatureUnit", "pressureUnit")
     SENSORID_FIELD_NUMBER: _ClassVar[int]
-    UNIT_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    TEMPERATUREUNIT_FIELD_NUMBER: _ClassVar[int]
+    PRESSUREUNIT_FIELD_NUMBER: _ClassVar[int]
     sensorId: int
-    unit: str
-    def __init__(self, sensorId: _Optional[int] = ..., unit: _Optional[str] = ...) -> None: ...
+    type: SensorType
+    temperatureUnit: TemperatureUnit
+    pressureUnit: PressureUnit
+    def __init__(self, sensorId: _Optional[int] = ..., type: _Optional[_Union[SensorType, str]] = ..., temperatureUnit: _Optional[_Union[TemperatureUnit, str]] = ..., pressureUnit: _Optional[_Union[PressureUnit, str]] = ...) -> None: ...
 
 class Measurement(_message.Message):
-    __slots__ = ("replyType", "msg", "value", "unit")
+    __slots__ = ("replyType", "msg", "value", "type", "temperatureUnit", "pressureUnit")
     REPLYTYPE_FIELD_NUMBER: _ClassVar[int]
     MSG_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
-    UNIT_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    TEMPERATUREUNIT_FIELD_NUMBER: _ClassVar[int]
+    PRESSUREUNIT_FIELD_NUMBER: _ClassVar[int]
     replyType: ReplyType
     msg: str
     value: float
-    unit: str
-    def __init__(self, replyType: _Optional[_Union[ReplyType, str]] = ..., msg: _Optional[str] = ..., value: _Optional[float] = ..., unit: _Optional[str] = ...) -> None: ...
+    type: SensorType
+    temperatureUnit: TemperatureUnit
+    pressureUnit: PressureUnit
+    def __init__(self, replyType: _Optional[_Union[ReplyType, str]] = ..., msg: _Optional[str] = ..., value: _Optional[float] = ..., type: _Optional[_Union[SensorType, str]] = ..., temperatureUnit: _Optional[_Union[TemperatureUnit, str]] = ..., pressureUnit: _Optional[_Union[PressureUnit, str]] = ...) -> None: ...
 
 class Speaker(_message.Message):
     __slots__ = ("id", "song", "volume")
@@ -99,6 +140,24 @@ class SpeakerSetting(_message.Message):
     text: str
     numeric: int
     def __init__(self, speakerId: _Optional[int] = ..., type: _Optional[_Union[SpeakerSetting.Type, str]] = ..., text: _Optional[str] = ..., numeric: _Optional[int] = ...) -> None: ...
+
+class ScheduledAlarm(_message.Message):
+    __slots__ = ("hour", "minute", "days")
+    HOUR_FIELD_NUMBER: _ClassVar[int]
+    MINUTE_FIELD_NUMBER: _ClassVar[int]
+    DAYS_FIELD_NUMBER: _ClassVar[int]
+    hour: int
+    minute: int
+    days: _containers.RepeatedScalarFieldContainer[Day]
+    def __init__(self, hour: _Optional[int] = ..., minute: _Optional[int] = ..., days: _Optional[_Iterable[_Union[Day, str]]] = ...) -> None: ...
+
+class AlarmClock(_message.Message):
+    __slots__ = ("id", "alarms")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    ALARMS_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    alarms: _containers.RepeatedCompositeFieldContainer[ScheduledAlarm]
+    def __init__(self, id: _Optional[int] = ..., alarms: _Optional[_Iterable[_Union[ScheduledAlarm, _Mapping]]] = ...) -> None: ...
 
 class Reply(_message.Message):
     __slots__ = ("type", "msg")
