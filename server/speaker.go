@@ -33,6 +33,10 @@ func (s *speakerServer) ApplySetting(ctx context.Context, in *pb.SpeakerSetting)
 		speaker.Song = in.GetText()
 
 	case pb.SpeakerSetting_VOLUME:
+		vol := in.GetNumeric()
+		if vol > 100 {
+			return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Volume cannot be higher than 100"}, nil
+		}
 		speaker.Volume = in.GetNumeric()
 	default:
 		return &pb.Reply{Type: pb.ReplyType_ERR, Msg: "Unknown setting"}, nil

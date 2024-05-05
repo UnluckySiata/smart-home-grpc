@@ -83,28 +83,6 @@ message SpeakerSetting {
     }
 }
 
-// alarm clock
-enum Day {
-    MONDAY = 0;
-    TUESDAY = 1;
-    WEDNESDAY = 2;
-    THURSDAY = 3;
-    FRIDAY = 4;
-    SATURDAY = 5;
-    SUNDAY = 6;
-}
-
-message ScheduledAlarm {
-    uint32 hour = 1;
-    uint32 minute = 2;
-    repeated Day days = 3;
-}
-
-message AlarmClock {
-    uint32 id = 1;
-    repeated ScheduledAlarm alarms = 2;
-}
-
 // universal
 message Reply {
     ReplyType type = 1;

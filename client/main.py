@@ -27,7 +27,7 @@ def stringify_speakers(speakers):
     return res
 
 
-def handle_list(r1, r2):
+def handle_list(r1, r2, server):
     if r1.replyType == devices_pb2.ReplyType.OK:
         print(f"Sensors from server {server}:\n{stringify_sensors(r1.list)}")
     else:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         channels.append(ch)
         stubs.append((sensor_stub, speaker_stub))
 
-        handle_list(r1, r2)
+        handle_list(r1, r2, server)
 
     print_help()
     while True:
@@ -123,7 +123,7 @@ if __name__ == "__main__":
                 r1 = sensor_stub.GetSensors(req_body)
                 r2 = speaker_stub.GetSpeakers(req_body)
 
-                handle_list(r1, r2)
+                handle_list(r1, r2, servers[selected])
 
             case "i":
                 l = cmd[2:].split(sep=" ")

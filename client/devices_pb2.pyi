@@ -21,16 +21,6 @@ class PressureUnit(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     HPA: _ClassVar[PressureUnit]
     BAR: _ClassVar[PressureUnit]
 
-class Day(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = ()
-    MONDAY: _ClassVar[Day]
-    TUESDAY: _ClassVar[Day]
-    WEDNESDAY: _ClassVar[Day]
-    THURSDAY: _ClassVar[Day]
-    FRIDAY: _ClassVar[Day]
-    SATURDAY: _ClassVar[Day]
-    SUNDAY: _ClassVar[Day]
-
 class ReplyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     OK: _ClassVar[ReplyType]
@@ -41,13 +31,6 @@ CELCIUS: TemperatureUnit
 FAHRENHEIT: TemperatureUnit
 HPA: PressureUnit
 BAR: PressureUnit
-MONDAY: Day
-TUESDAY: Day
-WEDNESDAY: Day
-THURSDAY: Day
-FRIDAY: Day
-SATURDAY: Day
-SUNDAY: Day
 OK: ReplyType
 ERR: ReplyType
 
@@ -140,24 +123,6 @@ class SpeakerSetting(_message.Message):
     text: str
     numeric: int
     def __init__(self, speakerId: _Optional[int] = ..., type: _Optional[_Union[SpeakerSetting.Type, str]] = ..., text: _Optional[str] = ..., numeric: _Optional[int] = ...) -> None: ...
-
-class ScheduledAlarm(_message.Message):
-    __slots__ = ("hour", "minute", "days")
-    HOUR_FIELD_NUMBER: _ClassVar[int]
-    MINUTE_FIELD_NUMBER: _ClassVar[int]
-    DAYS_FIELD_NUMBER: _ClassVar[int]
-    hour: int
-    minute: int
-    days: _containers.RepeatedScalarFieldContainer[Day]
-    def __init__(self, hour: _Optional[int] = ..., minute: _Optional[int] = ..., days: _Optional[_Iterable[_Union[Day, str]]] = ...) -> None: ...
-
-class AlarmClock(_message.Message):
-    __slots__ = ("id", "alarms")
-    ID_FIELD_NUMBER: _ClassVar[int]
-    ALARMS_FIELD_NUMBER: _ClassVar[int]
-    id: int
-    alarms: _containers.RepeatedCompositeFieldContainer[ScheduledAlarm]
-    def __init__(self, id: _Optional[int] = ..., alarms: _Optional[_Iterable[_Union[ScheduledAlarm, _Mapping]]] = ...) -> None: ...
 
 class Reply(_message.Message):
     __slots__ = ("type", "msg")
