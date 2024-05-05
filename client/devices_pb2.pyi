@@ -97,8 +97,8 @@ class SpeakerSetting(_message.Message):
     speakerId: int
     type: SpeakerSetting.Type
     text: str
-    numeric: float
-    def __init__(self, speakerId: _Optional[int] = ..., type: _Optional[_Union[SpeakerSetting.Type, str]] = ..., text: _Optional[str] = ..., numeric: _Optional[float] = ...) -> None: ...
+    numeric: int
+    def __init__(self, speakerId: _Optional[int] = ..., type: _Optional[_Union[SpeakerSetting.Type, str]] = ..., text: _Optional[str] = ..., numeric: _Optional[int] = ...) -> None: ...
 
 class Reply(_message.Message):
     __slots__ = ("type", "msg")

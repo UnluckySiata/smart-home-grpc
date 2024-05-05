@@ -2,7 +2,8 @@ import grpc
 import devices_pb2
 import devices_pb2_grpc
 
-servers: list[str] = ["localhost:50051"]
+# servers: list[str] = ["localhost:50051"]
+servers: list[str] = ["localhost:50051", "localhost:50052"]
 n = len(servers)
 channels: list[grpc.Channel] = []
 stubs: list[tuple[devices_pb2_grpc.SensorServiceStub, devices_pb2_grpc.SpeakerServiceStub]] = []
@@ -48,8 +49,12 @@ def print_help():
     h = """
 Commands:
 [h]elp - print this message
-[l]ist devices from a server
+[s]ervers (print available)
+[d]evice types (print all)
+[l]ist devices from a server:
+l <server_id>
 [i]nteract with a device from a server
+i <server_id> <device_type> <device_id> <action> <values...>
 [e]xit
 """
     print(h)
@@ -73,14 +78,20 @@ if __name__ == "__main__":
 
     print_help()
     while True:
-        match input("> ").lower():
+        cmd = input("> ")
+        if len(cmd) < 1:
+            continue
+        match cmd[0]:
             case "h":
                 print_help()
+            case "s":
+                print(f"Available servers:\n{', '.join([f'{i}: {servers[i]}' for i in range(n)])}")
+            case "d":
+                print("Device types:\n[se]nsor\n[sp]eaker")
             case "l":
-                print(f"select from available servers:\n{', '.join([f'{i}: {servers[i]}' for i in range(n)])}")
-                selected = int(input("> "))
+                selected = int(cmd[2:])
                 if selected < 0 or selected >= n:
-                    print("wrong selection")
+                    print(f"Not a valid server id: {selected}")
                     continue
 
                 sensor_stub, speaker_stub = stubs[selected]
@@ -92,36 +103,70 @@ if __name__ == "__main__":
                 handle_list(r1, r2)
 
             case "i":
-                print(f"select from available servers:\n{', '.join([f'{i}: {servers[i]}' for i in range(n)])}")
-                selected = int(input("> "))
-                if selected < 0 or selected >= n:
-                    print("wrong selection")
+                l = cmd[2:].split(sep=" ")
+                selected_server = int(l[0])
+                device_type = l[1].lower()
+                selected_device = int(l[2])
+                action = l[3].lower()
+                values = l[4:]
+                if selected_server < 0 or selected_server >= n:
+                    print(f"Not a valid server id: {selected_server}")
                     continue
 
-                sensor_stub, speaker_stub = stubs[selected]
+                sensor_stub, speaker_stub = stubs[selected_server]
 
-                selected = int(input("Enter device id: "))
-                while True:
-                    match input("Enter device type from [se]nsor, [sp]eaker: ").lower():
-                        case "se":
-                            while True:
-                                match input("Select action from [g]et, [s]et, [e]xit: " ).lower():
-                                    case "g":
-                                        r = sensor_stub.GetMeasurement(devices_pb2.Sensor(id=selected))
+                match device_type:
+                    case "se":
+                        match action:
+                            case "g":
+                                r = sensor_stub.GetMeasurement(devices_pb2.Sensor(id=selected_device))
 
-                                        print_measurement(r)
-                                    case "s":
-                                        unit = input("New unit: ")
-                                        r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected, unit=unit))
-                                    case "e":
-                                        break
+                                if r.replyType == devices_pb2.ReplyType.OK:
+                                    print(f"measurement: {r.value} {r.unit}")
+                                else:
+                                    print(r.msg)
+
+                            case "s":
+                                r = sensor_stub.SetUnit(devices_pb2.UnitInfo(sensorId=selected_device, unit=values[0]))
+
+                                if r.type == devices_pb2.ReplyType.ERR:
+                                    print(r.msg)
+                                else:
+                                    print("ok")
+                            case _:
+                                print(f"invalid action: {action}")
+                    case "sp":
+                        match action:
+                            case "g":
+                                r = speaker_stub.GetCurrentlyPlaying(devices_pb2.Speaker(id=selected_device))
+
+                                if r.type == devices_pb2.ReplyType.OK:
+                                    print(f"playing: {r.msg}")
+                                else:
+                                    print(r.msg)
+                            case "s":
+                                match values[0]:
+                                    case "volume":
+                                        variant = devices_pb2.SpeakerSetting.VOLUME
+                                        val = int(values[1])
+                                        setting = devices_pb2.SpeakerSetting(speakerId=selected_device, type=variant, numeric=val) 
+                                    case "song":
+                                        variant = devices_pb2.SpeakerSetting.SONG
+                                        val = values[1]
+                                        setting = devices_pb2.SpeakerSetting(speakerId=selected_device, type=variant, text=val) 
                                     case _:
+                                        print(f"Invalid speaker setting: {values[0]}")
                                         continue
-                            break
-                        case "sp":
-                            break
-                        case _:
-                            continue
+
+                                r = speaker_stub.ApplySetting(setting)
+                                if r.type == devices_pb2.ReplyType.ERR:
+                                    print(r.msg)
+                                else:
+                                    print("ok")
+                            case _:
+                                print(f"invalid action: {action}")
+                    case _:
+                        print(f"invalid device type: {device_type}")
 
 
             case "e":

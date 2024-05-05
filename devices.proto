@@ -54,7 +54,7 @@ message SpeakerSetting {
 
     oneof value {
         string text = 3;
-        double numeric = 4;
+        uint32 numeric = 4;
     }
     enum Type {
         VOLUME = 0;
